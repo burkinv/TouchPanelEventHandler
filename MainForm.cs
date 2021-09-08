@@ -45,7 +45,7 @@ namespace TouchPanelEventHandler
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";
             this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox.Size = new System.Drawing.Size(1898, 88);
+            this.textBox.Size = new System.Drawing.Size(276, 1030);
             this.textBox.TabIndex = 3;
             // 
             // labelMousePosition
@@ -58,7 +58,7 @@ namespace TouchPanelEventHandler
             this.labelMousePosition.ForeColor = System.Drawing.Color.White;
             this.labelMousePosition.Location = new System.Drawing.Point(4, 29);
             this.labelMousePosition.Name = "labelMousePosition";
-            this.labelMousePosition.Size = new System.Drawing.Size(1898, 23);
+            this.labelMousePosition.Size = new System.Drawing.Size(276, 23);
             this.labelMousePosition.TabIndex = 2;
             this.labelMousePosition.Text = "labelMousePosition";
             this.labelMousePosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -89,9 +89,9 @@ namespace TouchPanelEventHandler
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.ForeColor = System.Drawing.Color.Coral;
-            this.panel1.Location = new System.Drawing.Point(4, 149);
+            this.panel1.Location = new System.Drawing.Point(286, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1898, 889);
+            this.panel1.Size = new System.Drawing.Size(1920, 1080);
             this.panel1.TabIndex = 4;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -99,7 +99,7 @@ namespace TouchPanelEventHandler
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(1904, 1041);
+            this.ClientSize = new System.Drawing.Size(2208, 1087);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.labelMousePosition);
@@ -187,6 +187,9 @@ namespace TouchPanelEventHandler
             {
                 indicator[i].paint(graphics);
             }
+
+            //indicator[2].paint(graphics);
+
         }
     }
 }
