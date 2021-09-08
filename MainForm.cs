@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using System.Drawing;
 using gma.System.Windows;
 
 namespace GlobalHookDemo 
@@ -32,8 +33,10 @@ namespace GlobalHookDemo
             this.textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBox.Font = new System.Drawing.Font("Courier New", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
+            this.textBox.ForeColor = System.Drawing.Color.White;
             this.textBox.Location = new System.Drawing.Point(4, 55);
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";
@@ -45,8 +48,10 @@ namespace GlobalHookDemo
             // 
             this.labelMousePosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelMousePosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.labelMousePosition.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelMousePosition.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelMousePosition.ForeColor = System.Drawing.Color.White;
             this.labelMousePosition.Location = new System.Drawing.Point(4, 29);
             this.labelMousePosition.Name = "labelMousePosition";
             this.labelMousePosition.Size = new System.Drawing.Size(1898, 23);
@@ -57,6 +62,7 @@ namespace GlobalHookDemo
             // buttonStop
             // 
             this.buttonStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonStop.ForeColor = System.Drawing.Color.White;
             this.buttonStop.Location = new System.Drawing.Point(85, 3);
             this.buttonStop.Name = "buttonStop";
             this.buttonStop.Size = new System.Drawing.Size(75, 23);
@@ -67,6 +73,7 @@ namespace GlobalHookDemo
             // buttonStart
             // 
             this.buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonStart.ForeColor = System.Drawing.Color.White;
             this.buttonStart.Location = new System.Drawing.Point(4, 3);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(75, 23);
@@ -82,10 +89,12 @@ namespace GlobalHookDemo
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1898, 889);
             this.panel1.TabIndex = 4;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1904, 1041);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.textBox);
@@ -157,5 +166,24 @@ namespace GlobalHookDemo
             textBox.SelectionStart = textBox.Text.Length;
         }
 
-    }			
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = panel1.CreateGraphics();
+            Pen p = new Pen(Color.Green);
+
+            SolidBrush sb1 = new SolidBrush(Color.Green);
+            // Left DDI
+            g.DrawRectangle(p, 0, 100, 640, 640);
+            // Right DDI
+            g.DrawRectangle(p, 1280, 100, 640, 640);
+            // UFC
+            g.DrawRectangle(p, 640, 0, 640, 440);
+            // Down DDI
+            g.DrawRectangle(p, 640, 440, 640, 640);
+
+            g.FillRectangle(sb1, 1280, 100, 100, 100);
+
+        }
+    }
 }
