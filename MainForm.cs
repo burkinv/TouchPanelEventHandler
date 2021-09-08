@@ -9,6 +9,7 @@ namespace GlobalHookDemo
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.Label labelMousePosition;
+        private Panel panel1;
         private System.Windows.Forms.TextBox textBox;
 
         public MainForm()
@@ -23,31 +24,32 @@ namespace GlobalHookDemo
             this.labelMousePosition = new System.Windows.Forms.Label();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStart = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // textBox
             // 
-            this.textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBox.Font = new System.Drawing.Font("Courier New", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.textBox.Location = new System.Drawing.Point(4, 55);
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";
             this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox.Size = new System.Drawing.Size(322, 340);
+            this.textBox.Size = new System.Drawing.Size(1898, 88);
             this.textBox.TabIndex = 3;
             // 
             // labelMousePosition
             // 
-            this.labelMousePosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelMousePosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelMousePosition.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelMousePosition.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelMousePosition.Location = new System.Drawing.Point(4, 29);
             this.labelMousePosition.Name = "labelMousePosition";
-            this.labelMousePosition.Size = new System.Drawing.Size(322, 23);
+            this.labelMousePosition.Size = new System.Drawing.Size(1898, 23);
             this.labelMousePosition.TabIndex = 2;
             this.labelMousePosition.Text = "labelMousePosition";
             this.labelMousePosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -72,16 +74,28 @@ namespace GlobalHookDemo
             this.buttonStart.Text = "Start";
             this.buttonStart.Click += new System.EventHandler(this.ButtonStartClick);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.ForeColor = System.Drawing.Color.Coral;
+            this.panel1.Location = new System.Drawing.Point(4, 149);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1898, 889);
+            this.panel1.TabIndex = 4;
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(328, 398);
+            this.ClientSize = new System.Drawing.Size(1904, 1041);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.labelMousePosition);
             this.Controls.Add(this.buttonStop);
             this.Controls.Add(this.buttonStart);
             this.Name = "MainForm";
-            this.Text = "This application captures keystrokes";
+            this.Text = "Touch Panel Event Handler";
+            this.TopMost = true;
+            this.TransparencyKey = System.Drawing.Color.Black;
             this.Load += new System.EventHandler(this.MainFormLoad);
             this.ResumeLayout(false);
             this.PerformLayout();
