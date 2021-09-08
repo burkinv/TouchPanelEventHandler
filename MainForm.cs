@@ -2,8 +2,10 @@ using System;
 using System.Windows.Forms;
 using System.Drawing;
 using gma.System.Windows;
+using System.Collections.Generic;
 
-namespace GlobalHookDemo 
+
+namespace TouchPanelEventHandler
 {
     class MainForm : System.Windows.Forms.Form
     {
@@ -12,6 +14,8 @@ namespace GlobalHookDemo
         private System.Windows.Forms.Label labelMousePosition;
         private Panel panel1;
         private System.Windows.Forms.TextBox textBox;
+
+        private SortedDictionary<int, TouchPanelInstrument.DDI> indicator = new SortedDictionary<int, TouchPanelInstrument.DDI>();
 
         public MainForm()
         {
@@ -137,8 +141,16 @@ namespace GlobalHookDemo
             actHook.KeyDown+=new KeyEventHandler(MyKeyDown);
             actHook.KeyPress+=new KeyPressEventHandler(MyKeyPress);
             actHook.KeyUp+=new KeyEventHandler(MyKeyUp);
+
+
+            //Create intruments
+            indicator.Add(0, new TouchPanelInstrument.DDI("Left DDI", 0, 100, 640, 640));
+            indicator.Add(1, new TouchPanelInstrument.DDI("Right DDI", 1280, 100, 640, 640));
+            indicator.Add(2, new TouchPanelInstrument.UFC("UFC", 640, 0, 640, 440));
+            indicator.Add(3, new TouchPanelInstrument.DDI("MPCD", 640, 440, 640, 640));
+
         }
-        
+
         public void MouseMoved(object sender, MouseEventArgs e)
         {
             labelMousePosition.Text=String.Format("x={0}  y={1} wheel={2}", e.X, e.Y, e.Delta);
@@ -169,21 +181,12 @@ namespace GlobalHookDemo
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = panel1.CreateGraphics();
-            Pen p = new Pen(Color.Green);
+            Graphics graphics = panel1.CreateGraphics();
 
-            SolidBrush sb1 = new SolidBrush(Color.Green);
-            // Left DDI
-            g.DrawRectangle(p, 0, 100, 640, 640);
-            // Right DDI
-            g.DrawRectangle(p, 1280, 100, 640, 640);
-            // UFC
-            g.DrawRectangle(p, 640, 0, 640, 440);
-            // Down DDI
-            g.DrawRectangle(p, 640, 440, 640, 640);
-
-            g.FillRectangle(sb1, 1280, 100, 100, 100);
-
+            for (int i = 0; i < indicator.Count; ++i)
+            {
+                indicator[i].paint(graphics);
+            }
         }
     }
 }
