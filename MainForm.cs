@@ -144,10 +144,10 @@ namespace TouchPanelEventHandler
 
 
             //Create intruments
-            indicator.Add(0, new TouchPanelInstrument.DDI("Left DDI", 0, 100, 640, 640));
-            indicator.Add(1, new TouchPanelInstrument.DDI("Right DDI", 1280, 100, 640, 640));
+            indicator.Add(0, new TouchPanelInstrument.MCD("Left DDI", 0, 100, 640, 640));
+            indicator.Add(1, new TouchPanelInstrument.MCD("Right DDI", 1280, 100, 640, 640));
             indicator.Add(2, new TouchPanelInstrument.UFC("UFC", 640, 0, 640, 440));
-            indicator.Add(3, new TouchPanelInstrument.DDI("MPCD", 640, 440, 640, 640));
+            indicator.Add(3, new TouchPanelInstrument.MCD("MPCD", 640, 440, 640, 640));
 
         }
 
