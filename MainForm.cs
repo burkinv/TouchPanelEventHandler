@@ -9,11 +9,7 @@ namespace TouchPanelEventHandler
 {
     class MainForm : System.Windows.Forms.Form
     {
-        private System.Windows.Forms.Button buttonStart;
-        private System.Windows.Forms.Button buttonStop;
-        private System.Windows.Forms.Label labelMousePosition;
         private Panel panel1;
-        private System.Windows.Forms.TextBox textBox;
 
         //private const int WM_NCHITTEST = 0x84;
 
@@ -27,71 +23,14 @@ namespace TouchPanelEventHandler
         // THIS METHOD IS MAINTAINED BY THE FORM DESIGNER
         // DO NOT EDIT IT MANUALLY! YOUR CHANGES ARE LIKELY TO BE LOST
         void InitializeComponent() {
-            this.textBox = new System.Windows.Forms.TextBox();
-            this.labelMousePosition = new System.Windows.Forms.Label();
-            this.buttonStop = new System.Windows.Forms.Button();
-            this.buttonStart = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
-            // 
-            // textBox
-            // 
-            this.textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.textBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox.Font = new System.Drawing.Font("Courier New", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
-            this.textBox.ForeColor = System.Drawing.Color.White;
-            this.textBox.Location = new System.Drawing.Point(4, 55);
-            this.textBox.Multiline = true;
-            this.textBox.Name = "textBox";
-            this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox.Size = new System.Drawing.Size(276, 1030);
-            this.textBox.TabIndex = 3;
-            // 
-            // labelMousePosition
-            // 
-            this.labelMousePosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelMousePosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.labelMousePosition.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelMousePosition.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelMousePosition.ForeColor = System.Drawing.Color.White;
-            this.labelMousePosition.Location = new System.Drawing.Point(4, 29);
-            this.labelMousePosition.Name = "labelMousePosition";
-            this.labelMousePosition.Size = new System.Drawing.Size(276, 23);
-            this.labelMousePosition.TabIndex = 2;
-            this.labelMousePosition.Text = "labelMousePosition";
-            this.labelMousePosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // buttonStop
-            // 
-            this.buttonStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonStop.ForeColor = System.Drawing.Color.White;
-            this.buttonStop.Location = new System.Drawing.Point(85, 3);
-            this.buttonStop.Name = "buttonStop";
-            this.buttonStop.Size = new System.Drawing.Size(75, 23);
-            this.buttonStop.TabIndex = 1;
-            this.buttonStop.Text = "Stop";
-            this.buttonStop.Click += new System.EventHandler(this.ButtonStopClick);
-            // 
-            // buttonStart
-            // 
-            this.buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonStart.ForeColor = System.Drawing.Color.White;
-            this.buttonStart.Location = new System.Drawing.Point(4, 3);
-            this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(75, 23);
-            this.buttonStart.TabIndex = 0;
-            this.buttonStart.Text = "Start";
-            this.buttonStart.Click += new System.EventHandler(this.ButtonStartClick);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.ForeColor = System.Drawing.Color.Coral;
-            this.panel1.Location = new System.Drawing.Point(286, 0);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1920, 1080);
             this.panel1.TabIndex = 4;
@@ -102,21 +41,16 @@ namespace TouchPanelEventHandler
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(2208, 1087);
+            this.ClientSize = new System.Drawing.Size(1924, 1084);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.textBox);
-            this.Controls.Add(this.labelMousePosition);
-            this.Controls.Add(this.buttonStop);
-            this.Controls.Add(this.buttonStart);
             this.Name = "MainForm";
             this.Text = "Touch Panel Event Handler";
             this.TopMost = true;
-            this.TransparencyKey = System.Drawing.Color.Red;
+            this.TransparencyKey = System.Drawing.Color.Black;
             this.Load += new System.EventHandler(this.MainFormLoad);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MouseDown);
             this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.MouseDown);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
             
@@ -184,16 +118,25 @@ namespace TouchPanelEventHandler
 
         public void MouseEvent(object sender, MouseEventArgs e)
         {
-            labelMousePosition.Text=String.Format("x={0}  y={1} wheel={2}", e.X, e.Y, e.Delta);
-            if (e.Clicks>0) LogWrite("MouseButton 	- " + e.Button.ToString());
+            //labelMousePosition.Text=String.Format("x={0}  y={1} wheel={2}", e.X, e.Y, e.Delta);
+            //if (e.Clicks>0) LogWrite("MouseButton 	- " + e.Button.ToString());
 
             if (e.Button == MouseButtons.Left)
             {
-                Console.WriteLine("SRC(X={0}, Y={1}), WND(X={2}, Y={3}), PNL(X={4}, Y={5}) RLT(X={6}, Y={7})", 
+                Console.WriteLine("1:SRC(X={0}, Y={1}), WND(X={2}, Y={3}), PNL(X={4}, Y={5}) RLT(X={6}, Y={7})",
                     e.Location.X, e.Location.Y,
                     this.Left, this.Top,
                     this.panel1.Left, this.panel1.Top,
                     e.Location.X - this.Left - this.panel1.Left, e.Location.Y - this.Top - this.panel1.Top);
+                Console.WriteLine("2:SRC(X={0}, Y={1}), WND(X={2}, Y={3}), PNL(X={4}, Y={5}) RLT(X={6}, Y={7})",
+                    e.Location.X, e.Location.Y,
+                    this.DesktopLocation.X, this.DesktopLocation.Y,
+                    this.panel1.Location.X, this.panel1.Location.Y,
+                    e.Location.X - this.DesktopLocation.X - this.panel1.Location.X, e.Location.Y - this.DesktopLocation.Y - this.panel1.Location.Y);
+
+                Point p = this.PointToClient(e.Location);
+                Console.WriteLine("3:CLIENT_PNT(X={0}, Y={1})", p.X, p.Y);
+
             }
         }
 
@@ -219,8 +162,8 @@ namespace TouchPanelEventHandler
         
         private void LogWrite(string txt)
         {
-            textBox.AppendText(txt + Environment.NewLine);
-            textBox.SelectionStart = textBox.Text.Length;
+            //textBox.AppendText(txt + Environment.NewLine);
+            //textBox.SelectionStart = textBox.Text.Length;
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
