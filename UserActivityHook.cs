@@ -644,7 +644,7 @@ namespace gma.System.Windows
                         //case WM_LBUTTONDBLCLK: 
                         button = MouseButtons.Left;
 
-                        Console.WriteLine("LBClick: X={0}, Y={1}", mouseHookStruct.pt.x, mouseHookStruct.pt.y);
+                        //Console.WriteLine("LBClick: X={0}, Y={1}", mouseHookStruct.pt.x, mouseHookStruct.pt.y);
                         break;
                     case WM_RBUTTONDOWN:
                         //case WM_RBUTTONUP: 

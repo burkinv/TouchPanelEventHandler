@@ -15,6 +15,8 @@ namespace TouchPanelEventHandler
         private Panel panel1;
         private System.Windows.Forms.TextBox textBox;
 
+        //private const int WM_NCHITTEST = 0x84;
+
         private SortedDictionary<int, TouchPanelInstrument.DDI> indicator = new SortedDictionary<int, TouchPanelInstrument.DDI>();
 
         public MainForm()
@@ -89,11 +91,12 @@ namespace TouchPanelEventHandler
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.ForeColor = System.Drawing.Color.Coral;
-            this.panel1.Location = new System.Drawing.Point(286, 3);
+            this.panel1.Location = new System.Drawing.Point(286, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1920, 1080);
             this.panel1.TabIndex = 4;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.panel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel1_Clicked);
             // 
             // MainForm
             // 
@@ -108,8 +111,10 @@ namespace TouchPanelEventHandler
             this.Name = "MainForm";
             this.Text = "Touch Panel Event Handler";
             this.TopMost = true;
-            this.TransparencyKey = System.Drawing.Color.Black;
+            this.TransparencyKey = System.Drawing.Color.Red;
             this.Load += new System.EventHandler(this.MainFormLoad);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MouseDown);
+            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.MouseDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -120,7 +125,30 @@ namespace TouchPanelEventHandler
         {
             Application.Run(new MainForm());
         }
-        
+
+        //[System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+        //protected override void WndProc(ref Message m)
+        //{
+        //    // Listen for operating system messages.
+        //    switch (m.Msg)
+        //    {
+        //        case 0x84: //WM_NCHITTEST:
+        //            base.WndProc(ref m);
+        //            //if ((/*m.LParam.ToInt32() >> 16 and m.LParam.ToInt32() & 0xffff fit in your transparen region*/)
+        //            //  && m.Result.ToInt32() == 1)
+        //            if (m.Result.ToInt32() == 1)
+        //            {
+        //                m.Result = new IntPtr(2);   // HTCAPTION
+        //            }
+        //            Console.WriteLine("Message={0}", 0x84);
+        //            break;
+
+        //        default:
+        //            base.WndProc(ref m);
+        //            break;
+        //    }
+        //}
+
         void ButtonStartClick(object sender, System.EventArgs e)
         {
             actHook.Start();
@@ -133,11 +161,14 @@ namespace TouchPanelEventHandler
         
         
         UserActivityHook actHook;
+
+        public int WM_NCHITTEST { get; private set; }
+
         void MainFormLoad(object sender, System.EventArgs e)
         {
             actHook = new UserActivityHook(); // crate an instance with global hooks
             // hang on events
-            actHook.OnMouseActivity+=new MouseEventHandler(MouseMoved);
+            actHook.OnMouseActivity+=new MouseEventHandler(MouseEvent);
             actHook.KeyDown+=new KeyEventHandler(MyKeyDown);
             actHook.KeyPress+=new KeyPressEventHandler(MyKeyPress);
             actHook.KeyUp+=new KeyEventHandler(MyKeyUp);
@@ -151,12 +182,26 @@ namespace TouchPanelEventHandler
 
         }
 
-        public void MouseMoved(object sender, MouseEventArgs e)
+        public void MouseEvent(object sender, MouseEventArgs e)
         {
             labelMousePosition.Text=String.Format("x={0}  y={1} wheel={2}", e.X, e.Y, e.Delta);
             if (e.Clicks>0) LogWrite("MouseButton 	- " + e.Button.ToString());
+
+            if (e.Button == MouseButtons.Left)
+            {
+                Console.WriteLine("SRC(X={0}, Y={1}), WND(X={2}, Y={3}), PNL(X={4}, Y={5}) RLT(X={6}, Y={7})", 
+                    e.Location.X, e.Location.Y,
+                    this.Left, this.Top,
+                    this.panel1.Left, this.panel1.Top,
+                    e.Location.X - this.Left - this.panel1.Left, e.Location.Y - this.Top - this.panel1.Top);
+            }
         }
-        
+
+        public void MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            Console.WriteLine("MouseDown on MainForm");
+        }
+
         public void MyKeyDown(object sender, KeyEventArgs e)
         {
             LogWrite("KeyDown 	- " + e.KeyData.ToString());
@@ -178,7 +223,6 @@ namespace TouchPanelEventHandler
             textBox.SelectionStart = textBox.Text.Length;
         }
 
-
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             Graphics graphics = panel1.CreateGraphics();
@@ -190,6 +234,11 @@ namespace TouchPanelEventHandler
 
             //indicator[2].paint(graphics);
 
+        }
+
+        private void panel1_Clicked(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("PanelClick(X={0}, Y={1})", e.X, e.Y);
         }
     }
 }
