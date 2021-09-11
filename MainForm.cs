@@ -39,7 +39,7 @@ namespace TouchPanelEventHandler
             // 
             // MainForm
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1924, 1084);
             this.Controls.Add(this.panel1);
@@ -54,6 +54,8 @@ namespace TouchPanelEventHandler
 
         }
             
+
+
         [STAThread]
         public static void Main(string[] args)
         {
@@ -98,8 +100,41 @@ namespace TouchPanelEventHandler
 
         public int WM_NCHITTEST { get; private set; }
 
-        void MainFormLoad(object sender, System.EventArgs e)
+        public void SetPanelProperties()
         {
+            // Check available screens
+            bool boFormsSetOnSecondaryScreen = false;
+            Screen[] screens = Screen.AllScreens;
+            if (screens.Length == 2)
+            {
+                for (int i = 0; i < screens.Length; ++i)
+                {
+                    Screen scr = screens[i];
+                    if ((scr.Bounds.Width == 1920) && (scr.Bounds.Height == 1080))
+                    {
+                        this.StartPosition = FormStartPosition.Manual;
+                        this.Location = scr.WorkingArea.Location;
+                        //this.Size = new Size(scr.Bounds.Width, scr.Bounds.Height);
+                        this.panel1.Size = new Size(scr.Bounds.Width, scr.Bounds.Height);
+                        this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                        this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+                        boFormsSetOnSecondaryScreen = true;
+                    }
+                }
+            }
+
+            if (false == boFormsSetOnSecondaryScreen)
+            {
+                this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                this.WindowState = System.Windows.Forms.FormWindowState.Normal;
+            }
+        }
+
+
+        public void MainFormLoad(object sender, System.EventArgs e)
+        {
+            SetPanelProperties();
+
             actHook = new UserActivityHook(); // crate an instance with global hooks
             // hang on events
             actHook.OnMouseActivity+=new MouseEventHandler(MouseEvent);
@@ -111,8 +146,8 @@ namespace TouchPanelEventHandler
             //Create intruments
             indicator.Add(0, new TouchPanelInstrument.MCD("Left DDI", 0, 100, 640, 640));
             indicator.Add(1, new TouchPanelInstrument.MCD("Right DDI", 1280, 100, 640, 640));
-            indicator.Add(2, new TouchPanelInstrument.UFC("UFC", 640, 0, 640, 440));
-            indicator.Add(3, new TouchPanelInstrument.MCD("MPCD", 640, 440, 640, 640));
+            indicator.Add(2, new TouchPanelInstrument.UFC("UFC", 640, 640, 640, 440));
+            indicator.Add(3, new TouchPanelInstrument.MCD("MPCD", 640, 0, 640, 640));
 
         }
 

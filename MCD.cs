@@ -7,7 +7,7 @@ namespace TouchPanelInstrument
 {
     class MCD : TouchPanelInstrument.DDI
     {
-        private const float scaleFactor = 0.9f;
+        private const float scaleFactor = 0.8f;
         private float interiorWidth;
         private float interiorHeight;
         private float interiorMarginX;
