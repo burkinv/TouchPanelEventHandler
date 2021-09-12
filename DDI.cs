@@ -15,16 +15,17 @@ namespace TouchPanelInstrument
 
         protected SortedDictionary<int, InstrumentTouchZone> touchZones = new SortedDictionary<int, InstrumentTouchZone>();
 
-        public struct InstrumentTouchZone
+        public class InstrumentTouchZone
         {
-            public InstrumentTouchZone(int id, String label, float x, float y, float width, float height)
+            public InstrumentTouchZone(int id, String label, float x, float y, float width, float height, bool touched = false)
             {
-                this.id     = id;
-                this.label  = label;
-                this.x      = x;
-                this.y      = y;
-                this.width  = width;
-                this.height = height;
+                this.id      = id;
+                this.label   = label;
+                this.x       = x;
+                this.y       = y;
+                this.width   = width;
+                this.height  = height;
+                this.touched = touched;
             }
 
             public int id { get; }
@@ -33,6 +34,7 @@ namespace TouchPanelInstrument
             public float y { get; }
             public float width { get; }
             public float height { get; }
+            public bool touched { get; set; }
             public override string ToString() => $"({x}, {y}, {width}, {height})";
         }
 
@@ -45,9 +47,14 @@ namespace TouchPanelInstrument
             this.height = height;
         }
 
-        public virtual void paint(Graphics graphics)
+        public virtual void paintEvent(Graphics graphics)
         {
         }
+
+        public virtual void touchEvent(Point touchPoint, bool boTouch)
+        {
+        }
+
 
     }
 }

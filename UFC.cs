@@ -7,8 +7,8 @@ namespace TouchPanelInstrument
 {
     internal class UFC : TouchPanelInstrument.DDI
     {
-        private const float scaleFactorX = 0.65f;
-        private const float scaleFactorY = 0.95f;
+        private const float scaleFactorX = 0.40f;
+        private const float scaleFactorY = 0.80f;
 
         private float interiorMarginX;
         private float interiorMarginY;
@@ -21,8 +21,8 @@ namespace TouchPanelInstrument
         {
             keyboardWidth  = scaleFactorX * width;
             keyboardHeight = scaleFactorY * height;
-            interiorMarginX = 0.05f * width;
-            interiorMarginY = 0.05f * height;
+            interiorMarginX = 0.02f * width;
+            interiorMarginY = 0.02f * height;
             touchKeyWidth = (keyboardWidth - 2*interiorMarginX) / 3;
             touchKeyHeight = (keyboardHeight - 5*interiorMarginY) / 5;
 
@@ -54,9 +54,38 @@ namespace TouchPanelInstrument
                 }
             }
 
+            touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, "A/P", x + interiorMarginX,
+                                                                              6 * interiorMarginY + 5 * touchKeyHeight,
+                                                                              touchKeyWidth, touchKeyHeight));
+            ++keyIndex;
+            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "IFF", x + 2 * interiorMarginX + touchKeyWidth,
+                                                                              6 * interiorMarginY + 5 * touchKeyHeight,
+                                                                              touchKeyWidth, touchKeyHeight));
+            ++keyIndex;
+            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "TCN", x + 3 * interiorMarginX + 2 * touchKeyWidth,
+                                                                              6 * interiorMarginY + 5 * touchKeyHeight,
+                                                                              touchKeyWidth, touchKeyHeight));
+            ++keyIndex;
+            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "ILS", x + 4 * interiorMarginX + 3 * touchKeyWidth,
+                                                                              6 * interiorMarginY + 5 * touchKeyHeight,
+                                                                              touchKeyWidth, touchKeyHeight));
+            ++keyIndex;
+            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "D/L", x + 5 * interiorMarginX + 4 * touchKeyWidth,
+                                                                              6 * interiorMarginY + 5 * touchKeyHeight,
+                                                                              touchKeyWidth, touchKeyHeight));
+            ++keyIndex;
+            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "BCN", x + 6 * interiorMarginX + 5 * touchKeyWidth,
+                                                                              6 * interiorMarginY + 5 * touchKeyHeight,
+                                                                              touchKeyWidth, touchKeyHeight));
+            ++keyIndex;
+            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "ON/OFF", x + 7 * interiorMarginX + 6 * touchKeyWidth,
+                                                                              6 * interiorMarginY + 5 * touchKeyHeight,
+                                                                              touchKeyWidth, touchKeyHeight));
+            ++keyIndex;
+
         }
 
-        public override void paint(Graphics graphics)
+        public override void paintEvent(Graphics graphics)
         {
             Pen p = new Pen(Color.Green);
 
@@ -76,5 +105,10 @@ namespace TouchPanelInstrument
                 graphics.FillRectangle(sb1, touchZone.x, touchZone.y, touchZone.width, touchZone.height);
             }
         }
+
+        public override void touchEvent(Point touchPoint, bool boTouch)
+        {
+        }
+
     }
 }

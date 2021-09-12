@@ -640,17 +640,35 @@ namespace gma.System.Windows
                 switch (wParam)
                 {
                     case WM_LBUTTONDOWN:
+                    case WM_RBUTTONDOWN:
                         //case WM_LBUTTONUP: 
                         //case WM_LBUTTONDBLCLK: 
                         button = MouseButtons.Left;
+                        {
+                            //generate event
+                            MouseEventArgs e = new MouseEventArgs(button, 1, mouseHookStruct.pt.x, mouseHookStruct.pt.y, mouseDelta);
+                            //raise it
+                            OnMouseActivity(this, e);
+                        }
+                        break;
 
-                        //Console.WriteLine("LBClick: X={0}, Y={1}", mouseHookStruct.pt.x, mouseHookStruct.pt.y);
+                    case WM_LBUTTONUP:
+                    case WM_RBUTTONUP:
+                        button = MouseButtons.None;
+                        {
+                            //generate event
+                            MouseEventArgs e = new MouseEventArgs(button, 1, mouseHookStruct.pt.x, mouseHookStruct.pt.y, mouseDelta);
+                            //raise it
+                            OnMouseActivity(this, e);
+                        }
                         break;
-                    case WM_RBUTTONDOWN:
-                        //case WM_RBUTTONUP: 
-                        //case WM_RBUTTONDBLCLK: 
-                        button = MouseButtons.Right;
-                        break;
+
+                    //case WM_RBUTTONDOWN:
+                    //    //case WM_RBUTTONUP: 
+                    //    //case WM_RBUTTONDBLCLK: 
+                    //    button = MouseButtons.Right;
+                    //    break;
+
                     case WM_MOUSEWHEEL:
                         //If the message is WM_MOUSEWHEEL, the high-order word of mouseData member is the wheel delta. 
                         //One wheel click is defined as WHEEL_DELTA, which is 120. 
@@ -662,23 +680,17 @@ namespace gma.System.Windows
                         //and the low-order word is reserved. This value can be one or more of the following values. 
                         //Otherwise, mouseData is not used. 
                         break;
+
+                    default:
+                        break;
                 }
 
                 //double clicks
-                int clickCount = 0;
-                if (button != MouseButtons.None)
-                    if (wParam == WM_LBUTTONDBLCLK || wParam == WM_RBUTTONDBLCLK) clickCount = 2;
-                    else clickCount = 1;
+                //int clickCount = 0;
+                //if (button != MouseButtons.None)
+                //    if (wParam == WM_LBUTTONDBLCLK || wParam == WM_RBUTTONDBLCLK) clickCount = 2;
+                //    else clickCount = 1;
 
-                //generate event 
-                 MouseEventArgs e = new MouseEventArgs(
-                                                    button,
-                                                    clickCount,
-                                                    mouseHookStruct.pt.x,
-                                                    mouseHookStruct.pt.y,
-                                                    mouseDelta);
-                //raise it
-                OnMouseActivity(this, e);
             }
             //call next hook
             return CallNextHookEx(hMouseHook, nCode, wParam, lParam);

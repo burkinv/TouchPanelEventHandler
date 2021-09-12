@@ -46,11 +46,10 @@ namespace TouchPanelInstrument
             }
         }
 
-        public override void paint(Graphics graphics)
+        public override void paintEvent(Graphics graphics)
         {
             Pen p = new Pen(Color.Green);
-
-            SolidBrush sb1 = new SolidBrush(Color.Green);
+            SolidBrush sbGreen = new SolidBrush(Color.Green);
 
             // Draw instrument boundary
             graphics.DrawRectangle(p, x, y, width, height);
@@ -59,13 +58,29 @@ namespace TouchPanelInstrument
             graphics.DrawRectangle(p, x + interiorMarginX, y + interiorMarginY, interiorWidth, interiorHeight);
 
             // Draw touch zoones
-            SortedDictionary<int, InstrumentTouchZone>.Enumerator touchZoneEnumerator = touchZones.GetEnumerator();
-            while(touchZoneEnumerator.MoveNext())
+            foreach (KeyValuePair<int, InstrumentTouchZone> touchZonePair in this.touchZones)
             {
-                InstrumentTouchZone touchZone = touchZoneEnumerator.Current.Value;
-                graphics.DrawRectangle(p, touchZone.x, touchZone.y, touchZone.width, touchZone.height);
+                InstrumentTouchZone touchZone = touchZonePair.Value;
+                if (touchZone.touched)
+                    graphics.FillRectangle(sbGreen, touchZone.x, touchZone.y, touchZone.width, touchZone.height);
+                else
+                    graphics.DrawRectangle(p, touchZone.x, touchZone.y, touchZone.width, touchZone.height);
             }
         }
 
+
+        public override void touchEvent(Point touchPoint, bool boTouch)
+        {
+            // Test touch zoones
+            foreach (InstrumentTouchZone touchZone in this.touchZones.Values)
+            {
+                if ((touchPoint.X >= touchZone.x) && (touchPoint.X <= (touchZone.x + touchZone.width)) &&
+                    (touchPoint.Y >= touchZone.y) && (touchPoint.Y <= (touchZone.y + touchZone.height)))
+                {
+                    touchZone.touched = boTouch;
+                    Console.WriteLine("TouchEvent(X={0}, Y={1}), {2}", touchPoint.X, touchPoint.Y, (boTouch) ? "1" : "0");
+                }
+            }
+        }
     }
 }
