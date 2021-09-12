@@ -17,6 +17,9 @@ namespace TouchPanelInstrument
         private float touchKeyWidth;
         private float touchKeyHeight;
 
+        private Font font = new Font(FontFamily.GenericSansSerif, 18, FontStyle.Bold);
+
+
         public UFC(String id, float x, float y, float width, float height) : base(id, x, y, width, height)
         {
             keyboardWidth  = scaleFactorX * width;
@@ -27,7 +30,7 @@ namespace TouchPanelInstrument
             touchKeyHeight = (keyboardHeight - 5*interiorMarginY) / 5;
 
             // Define touch key zones
-            int keyIndex = 0;
+            int keyIndex = 1;
             for (int i = 1; i <= 4; ++i)
             {
                 for (int k = 1; k <= 3; ++k)
@@ -35,10 +38,24 @@ namespace TouchPanelInstrument
                     String label;
                     switch (keyIndex)
                     {
+                        case 2:
+                            label = "N\n2";
+                            break;
+                        case 4:
+                            label = "W\n4";
+                            break;
+                        case 6:
+                            label = "E\n6";
+                            break;
+                        case 8:
+                            label = "W\n8";
+                            break;
                         case 10:
                             label = "CLR";
                             break;
-
+                        case 11:
+                            label = "-\n0";
+                            break;
                         case 12:
                             label = "ENT";
                             break;
@@ -47,40 +64,40 @@ namespace TouchPanelInstrument
                             break;
                     }
 
-                    touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, label, x + k*interiorMarginX + (k-1)*touchKeyWidth, 
+                    touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, label, new RectangleF(x + k*interiorMarginX + (k-1)*touchKeyWidth, 
                                                                                       y + (i+1)*interiorMarginY + i*touchKeyHeight,
-                                                                               touchKeyWidth, touchKeyHeight));
+                                                                               touchKeyWidth, touchKeyHeight)));
                     ++keyIndex;
                 }
             }
 
-            touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, "A/P", x + interiorMarginX,
+            touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, "A/P", new RectangleF(x + interiorMarginX,
                                                                               6 * interiorMarginY + 5 * touchKeyHeight,
-                                                                              touchKeyWidth, touchKeyHeight));
+                                                                              touchKeyWidth, touchKeyHeight)));
             ++keyIndex;
-            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "IFF", x + 2 * interiorMarginX + touchKeyWidth,
+            touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, "IFF", new RectangleF(x + 2 * interiorMarginX + touchKeyWidth,
                                                                               6 * interiorMarginY + 5 * touchKeyHeight,
-                                                                              touchKeyWidth, touchKeyHeight));
+                                                                              touchKeyWidth, touchKeyHeight)));
             ++keyIndex;
-            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "TCN", x + 3 * interiorMarginX + 2 * touchKeyWidth,
+            touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, "TCN", new RectangleF(x + 3 * interiorMarginX + 2 * touchKeyWidth,
                                                                               6 * interiorMarginY + 5 * touchKeyHeight,
-                                                                              touchKeyWidth, touchKeyHeight));
+                                                                              touchKeyWidth, touchKeyHeight)));
             ++keyIndex;
-            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "ILS", x + 4 * interiorMarginX + 3 * touchKeyWidth,
+            touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, "ILS", new RectangleF(x + 4 * interiorMarginX + 3 * touchKeyWidth,
                                                                               6 * interiorMarginY + 5 * touchKeyHeight,
-                                                                              touchKeyWidth, touchKeyHeight));
+                                                                              touchKeyWidth, touchKeyHeight)));
             ++keyIndex;
-            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "D/L", x + 5 * interiorMarginX + 4 * touchKeyWidth,
+            touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, "D/L", new RectangleF(x + 5 * interiorMarginX + 4 * touchKeyWidth,
                                                                               6 * interiorMarginY + 5 * touchKeyHeight,
-                                                                              touchKeyWidth, touchKeyHeight));
+                                                                              touchKeyWidth, touchKeyHeight)));
             ++keyIndex;
-            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "BCN", x + 6 * interiorMarginX + 5 * touchKeyWidth,
+            touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, "BCN", new RectangleF(x + 6 * interiorMarginX + 5 * touchKeyWidth,
                                                                               6 * interiorMarginY + 5 * touchKeyHeight,
-                                                                              touchKeyWidth, touchKeyHeight));
+                                                                              touchKeyWidth, touchKeyHeight)));
             ++keyIndex;
-            touchZones.Add(keyIndex, new InstrumentTouchZone(13, "ON/OFF", x + 7 * interiorMarginX + 6 * touchKeyWidth,
+            touchZones.Add(keyIndex, new InstrumentTouchZone(keyIndex, "ON\nOFF", new RectangleF(x + 7 * interiorMarginX + 6 * touchKeyWidth,
                                                                               6 * interiorMarginY + 5 * touchKeyHeight,
-                                                                              touchKeyWidth, touchKeyHeight));
+                                                                              touchKeyWidth, touchKeyHeight)));
             ++keyIndex;
 
         }
@@ -89,7 +106,8 @@ namespace TouchPanelInstrument
         {
             Pen p = new Pen(Color.Green);
 
-            SolidBrush sb1 = new SolidBrush(Color.Green);
+            SolidBrush sbGreen = new SolidBrush(Color.Green);
+            SolidBrush sbYellow = new SolidBrush(Color.Yellow);
 
             // Draw instrument boundary
             graphics.DrawRectangle(p, x, y, width, height);
@@ -97,18 +115,29 @@ namespace TouchPanelInstrument
             // Draw input value indicator
             graphics.DrawRectangle(p, x + interiorMarginX, y + interiorMarginY, keyboardWidth, touchKeyHeight);
 
-            // Draw keyboard
-            SortedDictionary<int, InstrumentTouchZone>.Enumerator touchZoneEnumerator = touchZones.GetEnumerator();
-            while (touchZoneEnumerator.MoveNext())
+            // Draw touch zoones
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Center;
+            stringFormat.LineAlignment = StringAlignment.Center;
+
+            foreach (KeyValuePair<int, InstrumentTouchZone> touchZonePair in this.touchZones)
             {
-                InstrumentTouchZone touchZone = touchZoneEnumerator.Current.Value;
-                graphics.FillRectangle(sb1, touchZone.x, touchZone.y, touchZone.width, touchZone.height);
+                InstrumentTouchZone touchZone = touchZonePair.Value;
+                // Paint backgound
+                if (touchZone.touched)
+                {
+                    graphics.DrawRectangle(p, touchZone.rect.X, touchZone.rect.Y, touchZone.rect.Width, touchZone.rect.Height);
+                    //graphics.FillRectangle(sbYellow, touchZone.x, touchZone.y, touchZone.width, touchZone.height);
+                }
+                else
+                    graphics.FillRectangle(sbGreen, touchZone.rect.X, touchZone.rect.Y, touchZone.rect.Width, touchZone.rect.Height);
+
+                // Paint label
+
+                // Draw the text and the surrounding rectangle.
+                //RectangleF touchZoneRect = new RectangleF(touchZone.x, touchZone.y, touchZone.width, touchZone.height);
+                graphics.DrawString(touchZone.label, this.font, Brushes.White, touchZone.rect, stringFormat);
             }
         }
-
-        public override void touchEvent(Point touchPoint, bool boTouch)
-        {
-        }
-
     }
 }

@@ -186,9 +186,9 @@ namespace TouchPanelEventHandler
                     for (int i = 0; i < indicator.Count; ++i)
                     {
                         indicator[i].touchEvent(touchPoint, (e.Button == MouseButtons.Left) ? true : false);
-                        this.Refresh();
                     }
-
+                    this.Refresh();
+                    //this.Invalidate();
                 }
 
             }

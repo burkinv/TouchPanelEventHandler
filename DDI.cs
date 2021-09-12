@@ -17,25 +17,18 @@ namespace TouchPanelInstrument
 
         public class InstrumentTouchZone
         {
-            public InstrumentTouchZone(int id, String label, float x, float y, float width, float height, bool touched = false)
+            public InstrumentTouchZone(int id, String label, RectangleF rect, bool touched = false)
             {
                 this.id      = id;
                 this.label   = label;
-                this.x       = x;
-                this.y       = y;
-                this.width   = width;
-                this.height  = height;
+                this.rect    = rect;
                 this.touched = touched;
             }
 
             public int id { get; }
             public String label { get; }
-            public float x { get; }
-            public float y { get; }
-            public float width { get; }
-            public float height { get; }
+            public RectangleF rect { get; }
             public bool touched { get; set; }
-            public override string ToString() => $"({x}, {y}, {width}, {height})";
         }
 
         public DDI(String id, float x, float y, float width, float height)
@@ -53,8 +46,16 @@ namespace TouchPanelInstrument
 
         public virtual void touchEvent(Point touchPoint, bool boTouch)
         {
+            // Test touch zoones
+            foreach (InstrumentTouchZone touchZone in this.touchZones.Values)
+            {
+                if ((touchPoint.X >= touchZone.rect.X) && (touchPoint.X <= (touchZone.rect.X + touchZone.rect.Width)) &&
+                    (touchPoint.Y >= touchZone.rect.Y) && (touchPoint.Y <= (touchZone.rect.Y + touchZone.rect.Height)))
+                {
+                    touchZone.touched = boTouch;
+                    Console.WriteLine("TouchEvent(X={0}, Y={1}), {2}", touchPoint.X, touchPoint.Y, (boTouch) ? "1" : "0");
+                }
+            }
         }
-
-
     }
 }
